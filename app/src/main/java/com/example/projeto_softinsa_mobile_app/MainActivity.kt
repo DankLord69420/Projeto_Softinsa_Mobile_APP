@@ -1,6 +1,5 @@
 package com.example.projeto_softinsa_mobile_app
 
-
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -8,11 +7,13 @@ import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projeto_softinsa_mobile_app.login.Authorization
 import com.example.projeto_softinsa_mobile_app.ForgotPass
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,9 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var signupLink: TextView
     private lateinit var forgotpassword: TextView
     private lateinit var remembermeCheckbox: CheckBox
-
+    private lateinit var showpass: ImageView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private var isPrimeiroLogin: Boolean = false
 
     private var isLoggedIn: Boolean = false
 
@@ -39,7 +41,9 @@ class MainActivity : AppCompatActivity() {
         signupLink = findViewById(R.id.sigupLink)
         forgotpassword = findViewById(R.id.forgotPassword)
         remembermeCheckbox = findViewById(R.id.rememberMe)
-
+        showpass= findViewById(R.id.showpass_signin)
+        Log.d("Tag", "Mensagem de log de depuração") // Usando a prioridade DEBUG
+        Log.e("Tag", "Mensagem de erro") // Usando a prioridade ERROR
         sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -83,6 +87,23 @@ class MainActivity : AppCompatActivity() {
             val intentforgotPassword = Intent(this, ForgotPass::class.java)
             startActivity(intentforgotPassword)
         }
+
+        showpass.setOnClickListener{
+            val currentInputType = passwordEditText.inputType
+
+            if (currentInputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                // se a pass estiver visivel, muda para o modo normal
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                showpass.setImageResource(R.drawable.baseline_see_pass)
+            } else {
+                // If the password is currently hidden, switch to visible password mode
+                passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                showpass.setImageResource(R.drawable.baseline_see_pass)
+            }
+
+            // Move the cursor to the end of the text after changing input type
+            passwordEditText.setSelection(passwordEditText.text.length)
+        }
     }
 
     private fun checkForInternet(context: Context): Boolean {
@@ -125,23 +146,23 @@ class MainActivity : AppCompatActivity() {
         } else {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
-            val isPrimeiroLogin = true
             val authorization = Authorization(this, editor)
-
             val loginCallback = object : Authorization.LoginCallback {
                 override fun onSuccess(token: String) {
+                    val userId = authorization.getUserId()
+                    val isServerPrimeiroLogin = authorization.getIsServerPrimeiroLogin()
+                    Log.d("MainActivity", "isServerPrimeiroLogin: $isServerPrimeiroLogin")
 
-                    /*if(isPrimeiroLogin == true)
-                     {
-                         val intent = Intent(this@MainActivity, ResetPassword::class.java)
-                         intent.putExtra("userId", 123) // Substitua 123 pelo valor correto do userId
-                         startActivity(intent)
-                     }else
-                     {*/
-                    val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
-                    startActivity(intent)
-                    //}
-
+                    if (isServerPrimeiroLogin) {
+                        val intent = Intent(this@MainActivity, ResetPassword::class.java)
+                        intent.putExtra("userId", userId)
+                        intent.putExtra("email", email)
+                        intent.putExtra("isServerPrimeiroLogin", isServerPrimeiroLogin)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
 
                 override fun onFailure(errorMessage: String) {

@@ -17,11 +17,12 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
+            android:scaleType="centerInside"
             android:contentDescription="@string/menu"
             android:src="@drawable/baseline_menu_24"
+            android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="261dp"

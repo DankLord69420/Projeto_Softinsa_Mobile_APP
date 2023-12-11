@@ -12,18 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/adicionarEvento"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:fabCustomSize="80dp"
-            android:src="@android:drawable/ic_input_add"
-            android:clickable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="16dp"
-            />
-
         <ImageButton
             android:id="@+id/menu_btn"
             android:layout_width="56dp"

@@ -144,8 +144,6 @@ class Perfil(private val context: Context, private val editor: SharedPreferences
         requestQueue.add(request)
     }
 
-
-
     fun getUser(id: Int, callback: GetUserCallback)
     {
         url = "https://softinsa-web-app-carreiras01.onrender.com/user/get/$id"

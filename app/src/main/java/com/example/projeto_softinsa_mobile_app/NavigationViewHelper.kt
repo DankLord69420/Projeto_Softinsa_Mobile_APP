@@ -37,70 +37,132 @@ object NavigationViewHelper {
         toggle.syncState()
         var cargoId = 0
 
-
         val user = Perfil(activity, null)
         cargoId = user.getStoredCargoId()
 
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if(cargoId==1)
+        {
+            navigationView.setNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_home -> {
+                        val intent1 = Intent(activity, MainPage::class.java)
+                        intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        activity.startActivity(intent1)
+                    }
+                    R.id.nav_oportunities -> {
+                        val intent2 = Intent(activity, MainOportunidades::class.java)
+                        activity.startActivity(intent2)
+                    }
+                    R.id.nav_ideas -> {
+                        val intent3 = Intent(activity, MainIdeia::class.java)
+                        activity.startActivity(intent3)
+                    }
+                    R.id.nav_job_offers -> {
+                        val intent4 = Intent(activity, MainOferta_Vaga::class.java)
+                        activity.startActivity(intent4)
+                    }
+                    R.id.nav_benefits -> {
+                        val intent5 = Intent(activity, MainBeneficio::class.java)
+                        activity.startActivity(intent5)
+                    }
+                    R.id.nav_list_users -> {
+                        val intent7 = Intent(activity, MainListUsers::class.java)
+                        activity.startActivity(intent7)
+                    }
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    val intent1 = Intent(activity, MainPage::class.java)
-                    intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    activity.startActivity(intent1)
-                }
-                R.id.nav_oportunities -> {
-                    val intent2 = Intent(activity, MainOportunidades::class.java)
-                    activity.startActivity(intent2)
-                }
-                R.id.nav_ideas -> {
-                    val intent3 = Intent(activity, MainIdeia::class.java)
-                    activity.startActivity(intent3)
-                }
-                R.id.nav_job_offers -> {
-                    val intent4 = Intent(activity, MainOferta_Vaga::class.java)
-                    activity.startActivity(intent4)
-                }
-                R.id.nav_benefits -> {
-                    val intent5 = Intent(activity, MainBeneficio::class.java)
-                    activity.startActivity(intent5)
-                }
-                R.id.nav_list_users -> {
-                    val intent7 = Intent(activity, MainListUsers::class.java)
-                    activity.startActivity(intent7)
-                }
+                    R.id.reporting -> {
+                        val intent = Intent(activity, MainReporting::class.java)
+                        activity.startActivity(intent)
+                    }
 
-                R.id.reporting -> {
-                    val intent = Intent(activity, MainReporting::class.java)
-                    activity.startActivity(intent)
-                }
+                    R.id.nav_profile -> {
+                        if (cargoId <= 2) {
+                            val intent8 = Intent(activity, PerfilActivity::class.java)
+                            activity.startActivity(intent8)
+                        } else {
+                        }
+                    }
 
-                R.id.nav_profile -> {
-                    if (cargoId <= 2) {
-                        val intent8 = Intent(activity, PerfilActivity::class.java)
-                        activity.startActivity(intent8)
-                    } else {
+                    R.id.nav_calendario -> {
+                        val intent9 = Intent(activity, MainCalendario::class.java)
+                        activity.startActivity(intent9)
+                    }
+                    R.id.nav_logout -> {
+                        val intent6 = Intent(activity, MainActivity::class.java)
+                        //nao deixar voltar atras :3
+                        intent6.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        Toast.makeText(activity, "Login Out", Toast.LENGTH_SHORT).show()
+                        activity.startActivity(intent6)
+                        activity.finish() // Encerra a atividade atual
                     }
                 }
-
-                R.id.nav_calendario -> {
-                    val intent9 = Intent(activity, MainCalendario::class.java)
-                    activity.startActivity(intent9)
-                }
-                R.id.nav_logout -> {
-                    val intent6 = Intent(activity, MainActivity::class.java)
-                    //nao deixar voltar atras :3
-                    intent6.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    Toast.makeText(activity, "Login Out", Toast.LENGTH_SHORT).show()
-                    activity.startActivity(intent6)
-                    activity.finish() // Encerra a atividade atual
-                }
+                drawerLayout.closeDrawer(GravityCompat.START)
+                true
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
         }
+        else
+        {
+            navigationView.setNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_home -> {
+                        val intent1 = Intent(activity, MainPage::class.java)
+                        intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        activity.startActivity(intent1)
+                    }
+                    R.id.nav_oportunities -> {
+                        val intent2 = Intent(activity, MainOportunidades::class.java)
+                        activity.startActivity(intent2)
+                    }
+                    R.id.nav_ideas -> {
+                        val intent3 = Intent(activity, MainIdeia::class.java)
+                        activity.startActivity(intent3)
+                    }
+                    R.id.nav_job_offers -> {
+                        val intent4 = Intent(activity, MainOferta_Vaga::class.java)
+                        activity.startActivity(intent4)
+                    }
+                    R.id.nav_benefits -> {
+                        val intent5 = Intent(activity, MainBeneficio::class.java)
+                        activity.startActivity(intent5)
+                    }
+                    R.id.nav_list_users -> {
+                        if(cargoId!=1)
+                        {
+                            Toast.makeText(activity, "Não tens permissões para aceder à lista de utilizadores.", Toast.LENGTH_SHORT).show()                        }
+                    }
 
+                    R.id.reporting -> {
+                        if(cargoId!=1)
+                        {
+                            Toast.makeText(activity, "Não tens permissões para aceder à lista de utilizadores.", Toast.LENGTH_SHORT).show()                        }
+                    }
+
+                    R.id.nav_profile -> {
+                        if (cargoId <= 2) {
+                            val intent8 = Intent(activity, PerfilActivity::class.java)
+                            activity.startActivity(intent8)
+                        }
+                    }
+
+                    R.id.nav_calendario -> {
+                        val intent9 = Intent(activity, MainCalendario::class.java)
+                        activity.startActivity(intent9)
+                    }
+                    R.id.nav_logout -> {
+                        val intent6 = Intent(activity, MainActivity::class.java)
+                        //nao deixar voltar atras :3
+                        intent6.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        Toast.makeText(activity, "Login Out", Toast.LENGTH_SHORT).show()
+                        activity.startActivity(intent6)
+                        activity.finish() // Encerra a atividade atual
+                    }
+                }
+                drawerLayout.closeDrawer(GravityCompat.START)
+                true
+            }
+
+        }
         val navProfileItem = navigationView.menu.findItem(R.id.nav_profile)
         if (cargoId > 2) {
             navProfileItem.isVisible = false

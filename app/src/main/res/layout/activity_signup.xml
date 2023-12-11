@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +16,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="1dp"
         android:gravity="center"
-        android:text="Sign up"
+        android:text="Registar"
         android:textColor="@color/black"
         android:textSize="35sp"
         android:textStyle="bold" />
@@ -33,7 +32,7 @@
         android:layout_marginBottom="1dp"
         android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="15dp"
-        android:hint="Name"
+        android:hint="Nome"
         android:inputType="text"
         android:padding="15dp"
         android:textColor="@color/black"
@@ -51,7 +50,7 @@
         android:layout_marginBottom="1dp"
         android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="15dp"
-        android:hint="Sobrenome"
+        android:hint="Apelido"
         android:inputType="text"
         android:padding="15dp"
         android:textColor="@color/black"
@@ -83,7 +82,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="1dp"
-        android:hint="Telemovel"
+        android:hint="Telefone"
         android:padding="15dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
@@ -99,26 +98,60 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="1dp"
-        android:hint="Confirm Password"
+        android:hint="Palavra Passe"
         android:inputType="textPassword"
         android:padding="15dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:drawableStart="@drawable/baseline_password_24"
         android:drawablePadding="15dp"/>
+    <ImageView
+        android:id="@+id/show_pass_1"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@id/password"
+        android:layout_alignEnd="@id/password"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/baseline_see_pass" />
+    <EditText
+        android:id="@+id/confirmpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1dp"
+        android:hint="Confirmar Palavra Passe"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:drawableStart="@drawable/baseline_password_24"
+        android:drawablePadding="15dp"/>
+    <ImageView
+        android:id="@+id/show_pass_2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@id/confirmpassword"
+        android:layout_alignEnd="@id/confirmpassword"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/baseline_see_pass" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signupbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password"
+        android:layout_below="@id/confirmpassword"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@android:color/holo_purple"
-        android:text="Sign up"
+        android:text="Registar"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:onClick="onSignUpButtonClicked"/>
@@ -135,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Already have an account?"
+            android:text="Já tens uma conta?"
             android:gravity="end"/>
 
         <TextView
@@ -143,7 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text=" Sign in"
+            android:text="Login"
             android:gravity="start"
             android:background="@null"
             android:textColor="@android:color/holo_blue_dark"
@@ -158,7 +191,7 @@
         android:layout_above="@id/socialicons"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="1dp"
-        android:text="Sign up with" />
+        android:text="Registo pelo" />
 
     <LinearLayout
         android:id="@+id/socialicons"

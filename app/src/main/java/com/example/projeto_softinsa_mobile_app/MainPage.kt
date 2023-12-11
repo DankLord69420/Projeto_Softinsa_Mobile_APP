@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -27,6 +28,7 @@ class MainPage : AppCompatActivity() {
         val nome = findViewById<TextView>(R.id.main_nome)
         val authorization = Authorization(this, null)
         userId = authorization.getUserId()
+
         perfil = Perfil(this, getSharedPreferences("loginPrefs", Context.MODE_PRIVATE).edit())
 
         perfil.getUser(userId, object : Perfil.GetUserCallback {
@@ -34,9 +36,11 @@ class MainPage : AppCompatActivity() {
                 val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putInt("cargoId", user.cargoId)
+
                 editor.putBoolean("isColaborador", user.isColaborador)
                 editor.apply()
                 nome.text = user.primeiroNome + " " + user.ultimoNome
+
             }
 
             override fun onFailure(errorMessage: String) {

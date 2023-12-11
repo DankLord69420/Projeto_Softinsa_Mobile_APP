@@ -8,29 +8,20 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import com.example.projeto_softinsa_mobile_app.API.Candidatura
 import com.example.projeto_softinsa_mobile_app.Des_tudo.imagem_vaga
 import com.example.projeto_softinsa_mobile_app.Detailed.Detailed_vaga
 import com.example.projeto_softinsa_mobile_app.lvadapador.Lvadapador_vaga
 import com.example.projeto_softinsa_mobile_app.API.Perfil
 import com.example.projeto_softinsa_mobile_app.API.Vaga
-import com.example.projeto_softinsa_mobile_app.Des_tudo.imagem_candidatura
-import com.example.projeto_softinsa_mobile_app.Detailed.Detailed_candidatura
-import com.example.projeto_softinsa_mobile_app.login.Authorization
-import com.example.projeto_softinsa_mobile_app.lvadapador.Lvadapador_candidatura
 import com.google.gson.Gson
 
 class vagaFragment : Fragment() {
     private var option: Int = 0
     private var lv_vaga: ListView? = null
     private var ada: Lvadapador_vaga? = null
-    private var ada2: Lvadapador_candidatura? = null
     private lateinit var vagaApi: Vaga
-    private lateinit var candidaturaApi: Candidatura
     var isColaborador = false
     private lateinit var fragmentContext: Context
-    var userId = 0
-
 
     companion object {
         private const val ARG_OPTION = "option"
@@ -48,11 +39,8 @@ class vagaFragment : Fragment() {
         super.onCreate(savedInstanceState)
         option = arguments?.getInt(ARG_OPTION) ?: 0
         vagaApi = Vaga(requireContext(), requireActivity().getPreferences(Context.MODE_PRIVATE).edit())
-        candidaturaApi = Candidatura(requireContext(), requireActivity().getPreferences(Context.MODE_PRIVATE).edit())
         val user = Perfil(fragmentContext, null)
         isColaborador = user.getStoredIsColaborador()
-        val auth = Authorization(fragmentContext, null)
-        userId = auth.getUserId()
     }
 
     override fun onAttach(context: Context) {
@@ -78,8 +66,6 @@ class vagaFragment : Fragment() {
             intent.putExtra("vagaJson", vagaJson)
             startActivity(intent)
         }
-
-
 
 
         // Perform the database request based on the selected option
@@ -110,29 +96,6 @@ class vagaFragment : Fragment() {
                     override fun onFailure(errorMessage: String) {
                     }
                 })
-
-            }
-            2 -> {
-                candidaturaApi.listCandidaturasUser(userId = userId, object : Candidatura.GetCandidaturaCallback {
-                    override fun onSuccess(candidaturas: List<imagem_candidatura>) {
-
-                        ada2 = Lvadapador_candidatura(requireContext(), candidaturas)
-                        lv_vaga!!.adapter = ada2
-                        loadingLayout.visibility = View.GONE
-                    }
-
-                    override fun onFailure(errorMessage: String) {
-                    }
-                })
-
-                lv_vaga!!.setOnItemClickListener { _, _, position, _ ->
-                    val selectCandidatura = ada2?.getItem(position) as imagem_candidatura
-                    val gson = Gson()
-                    val candidaturaJson = gson.toJson(selectCandidatura)
-                    val intent = Intent(requireContext(), Detailed_candidatura::class.java)
-                    intent.putExtra("candidaturaJson", candidaturaJson)
-                    startActivity(intent)
-                }
 
             }
         }

@@ -17,7 +17,9 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
-            android:contentDescription="@string/menu"
+            android:contentDescription="@string/menu"            android:background="@android:color/transparent"
+
+
             android:src="@drawable/baseline_menu_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

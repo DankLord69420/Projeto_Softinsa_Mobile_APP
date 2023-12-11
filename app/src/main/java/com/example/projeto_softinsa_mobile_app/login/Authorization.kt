@@ -15,6 +15,7 @@ import org.json.JSONObject
 class Authorization(private val context: Context, private val editor: SharedPreferences.Editor?) {
     private lateinit var url: String
     private val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+    private var isServerPrimeiroLogin: Boolean = false
 
     interface LoginCallback {
         fun onSuccess(token: String)
@@ -42,13 +43,15 @@ class Authorization(private val context: Context, private val editor: SharedPref
             Response.Listener { response ->
                 val token = response.optString("accessToken")
                 val userId = response.optInt("userId")
-
+                isServerPrimeiroLogin = response.optBoolean("isPrimeiroLogin")
                 // Imprimir a resposta JSON para solução de problemas
                 Log.d("Authorization", "Response JSON: $response")
+                Log.d("Authorization", "isServerPrimeiroLogin: $isServerPrimeiroLogin")
 
                 if (token.isNotEmpty()) {
                     editor?.putString("token", token)
                     editor?.putInt("userId", userId)
+                    editor?.putBoolean("isPrimeiroLogin", isPrimeiroLogin)
                     Log.d("tag", userId.toString())
                     editor?.apply()
 
@@ -68,10 +71,13 @@ class Authorization(private val context: Context, private val editor: SharedPref
     }
 
     fun getUserId(): Int {
+        // Retrieve the userId from SharedPreferences
         return context.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-            .getInt("userId", 0)
+            .getInt("userId", 0) // 0 is the default value if userId is not found
     }
-
+    fun getIsServerPrimeiroLogin(): Boolean {
+        return isServerPrimeiroLogin
+    }
     fun registar(
         primeiroNome: String,
         ultimoNome: String,
@@ -121,22 +127,33 @@ class Authorization(private val context: Context, private val editor: SharedPref
 
     // Função getUserDetail() removida, pois não parece estar relacionada às colunas desejadas.
 
-    fun ChangePassword(id: Int, email: String, newPassword: String, callback: ChangePasswordCallback) {
-        val url = "https://softinsa-web-app-carreiras01.onrender.com/user/update/$id"
+    fun ChangePassword(userId: Int, email: String, newPassword: String, isPrimeiroLogin: Boolean, callback: ChangePasswordCallback) {
+        val url = "https://softinsa-web-app-carreiras01.onrender.com/auth/primeiroLogin/$userId"
 
         val body = JSONObject()
         try {
             body.put("email", email)
             body.put("password", newPassword)
+            body.put("isPrimeiroLogin", isPrimeiroLogin)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
 
         val request = JsonObjectRequest(
-            Request.Method.PUT, url, body,
+            Request.Method.POST, // Altere para POST
+            url,
+            body,
             Response.Listener { response ->
                 Log.d("ChangePassword", "Response JSON: $response")
+                // Atualize o valor de isPrimeiroLogin nas SharedPreferences
+                val sharedPreferences = context.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("isPrimeiroLogin", isPrimeiroLogin)
+                editor.apply()
+                Log.d("Debug", "isPrimeiroLogin atualizado para: " + isPrimeiroLogin);
                 callback.onSuccess()
+                Log.d("Debug", "isPrimeiroLogin atualizado para1: " + isPrimeiroLogin);
+                editor.apply()
             },
             Response.ErrorListener { error ->
                 error.printStackTrace()
@@ -147,5 +164,4 @@ class Authorization(private val context: Context, private val editor: SharedPref
 
         requestQueue.add(request)
     }
-
 }

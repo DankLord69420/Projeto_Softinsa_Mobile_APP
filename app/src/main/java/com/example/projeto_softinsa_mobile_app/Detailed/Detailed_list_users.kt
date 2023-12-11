@@ -1,11 +1,14 @@
 package com.example.projeto_softinsa_mobile_app.Detailed
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -17,10 +20,13 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.projeto_softinsa_mobile_app.*
+import com.example.projeto_softinsa_mobile_app.API.Perfil
 import com.example.projeto_softinsa_mobile_app.ListUser.Edit_ListUser
 import com.example.projeto_softinsa_mobile_app.ListUser.MainListUsers
+import com.example.projeto_softinsa_mobile_app.login.Authorization
 import com.google.android.material.navigation.NavigationView
 import org.json.JSONException
 import org.json.JSONObject
@@ -52,10 +58,14 @@ class Detailed_list_users : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var requestQueue: RequestQueue
+    private lateinit var perfil: Perfil
+
+    var userId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_list_users)
-
+        val authorization = Authorization(this, null)
+        userId = authorization.getUserId()
         val texto1 = findViewById<TextView>(R.id.detailed_Lista_user_Nome)
         val texto2 = findViewById<TextView>(R.id.detailed_Lista_user_Sobrenome)
         val texto3 = findViewById<TextView>(R.id.detailed_Lista_user_Num_Func)
@@ -68,7 +78,7 @@ class Detailed_list_users : AppCompatActivity() {
         val texto10 = findViewById<TextView>(R.id.detailed_Lista_user_Morada)
         val texto11 = findViewById<TextView>(R.id.detailed_Lista_user_Id)
 
-        val userId = intent.extras?.get("userId")
+        perfil = Perfil(this, getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).edit())
         val givenName = intent.extras?.get("Lista_user_Nome")
         val givenSubName = intent.extras?.get("Lista_user_Sobrenome")
         val givenNumFunctionario = intent.extras?.get("Lista_user_Num_Func")
@@ -79,7 +89,7 @@ class Detailed_list_users : AppCompatActivity() {
         val givenisDepartamento = intent.extras?.get("Lista_user_Departamento")
         val givenisFilial = intent.extras?.get("Lista_user_Filial")
         val givenisMorada = intent.extras?.get("Lista_user_Morada")
-
+        val givenUserId = intent.extras?.get("userId")
         texto1.text = givenName.toString()
         texto2.text = givenSubName.toString()
         texto3.text = givenNumFunctionario.toString()
@@ -88,62 +98,62 @@ class Detailed_list_users : AppCompatActivity() {
         texto6.text = givenEstado.toString()
         //texto7.text = givenCargo.toString()
         texto10.text = givenisMorada.toString()
-        texto11.text =userId.toString()
+        texto11.text = givenUserId.toString()
         requestQueue = Volley.newRequestQueue(this)
 
         val filialId = givenisFilial.toString()
         val DepartamentoId = givenisDepartamento.toString()
         val cargoId = givenisCargo.toString()
-
-        Log.d("tag", "$filialId")
-        if (filialId != null) {
-            getFilial(object : GetFilialCallback {
-                override fun onSuccess(filial: Filial) {
-                    Log.d("tag", "${filial.filialNome}")
-                    texto9?.text = filial.filialNome
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    //holder.tvFilialId?.text = "Error: $errorMessage"
-                }
-            }, filialId.toInt())
-        }
-
-        Log.d("tag", "$DepartamentoId")
-        if (DepartamentoId != null) {
-            getDepartamento(object : GetDepartamentoCallback {
-                override fun onSuccess(departamento: Departamento) {
-                    Log.d("tag", "${departamento.departamentoNome}")
-                    texto8?.text = departamento.departamentoNome
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    //holder.tvFilialId?.text = "Error: $errorMessage"
-                }
-            }, DepartamentoId.toInt())
-        }
-
-        Log.d("tag", "$cargoId")
-        if (cargoId != null) {
-            listCargo(object : GetCargosCallback {
-                override fun onSuccess(cargos: ArrayList<Cargo>) {
-                    var cargoName: String? = null
-
-                    for (cargo in cargos) {
-                        if (cargo.cargoId == cargoId.toInt()) {
-                            cargoName = cargo.cargoNome
-                            break
-                        }
+        if (userId != 0) {
+            Log.d("tag", "$filialId")
+            if (filialId != null) {
+                getFilial(object : GetFilialCallback {
+                    override fun onSuccess(filial: Filial) {
+                        Log.d("tag", "${filial.filialNome}")
+                        texto9?.text = filial.filialNome
                     }
-                        texto7?.text = cargoName
-                }
 
-                override fun onFailure(errorMessage: String) {
-                    //holder.tvFilialId?.text = "Error: $errorMessage"
-                }
-            })
+                    override fun onFailure(errorMessage: String) {
+                        //holder.tvFilialId?.text = "Error: $errorMessage"
+                    }
+                }, filialId.toInt())
+            }
+
+            Log.d("tag", "$DepartamentoId")
+            if (DepartamentoId != null) {
+                getDepartamento(object : GetDepartamentoCallback {
+                    override fun onSuccess(departamento: Departamento) {
+                        Log.d("tag", "${departamento.departamentoNome}")
+                        texto8?.text = departamento.departamentoNome
+                    }
+
+                    override fun onFailure(errorMessage: String) {
+                        //holder.tvFilialId?.text = "Error: $errorMessage"
+                    }
+                }, DepartamentoId.toInt())
+            }
+
+            Log.d("tag", "$cargoId")
+            if (cargoId != null) {
+                listCargo(object : GetCargosCallback {
+                    override fun onSuccess(cargos: ArrayList<Cargo>) {
+                        var cargoName: String? = null
+
+                        for (cargo in cargos) {
+                            if (cargo.cargoId == cargoId.toInt()) {
+                                cargoName = cargo.cargoNome
+                                break
+                            }
+                        }
+                            texto7?.text = cargoName
+                    }
+
+                    override fun onFailure(errorMessage: String) {
+                        //holder.tvFilialId?.text = "Error: $errorMessage"
+                    }
+                })
+            }
         }
-
         // Initialize requestQueue after other variables have been initialized
         var drawerLayout : DrawerLayout = findViewById(R.id.drawerLayout)
 
@@ -231,31 +241,32 @@ class Detailed_list_users : AppCompatActivity() {
 
         val eliminarButton = findViewById<Button>(R.id.Eliminar)
         eliminarButton.setOnClickListener {
-            intent.putExtra("userId", userId.toString())
             val alertDialogBuilder = AlertDialog.Builder(this)
             alertDialogBuilder.setTitle("Confirmação")
             alertDialogBuilder.setMessage("Tem certeza de que deseja eliminar o seu perfil? Essa ação não pode ser desfeita!")
             alertDialogBuilder.setPositiveButton("Sim") { dialog, _ ->
-                deleteUser(userId.toString().toInt(), object : GetUpdateCallback {
-                    override fun onSuccess(sucesso: Boolean) {
-                        Toast.makeText(
-                            this@Detailed_list_users,
-                            "Perfil eliminado com sucesso!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                val userId = intent.getStringExtra("userId")
 
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        //nao deixar voltar atras :3
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
-                    }
+                if (userId != null) {
+                    deleteUser(userId.toInt(), object : GetUpdateCallback {
+                        override fun onSuccess(sucesso: Boolean) {
+                            if (sucesso) {
+                                // Exibindo uma mensagem de sucesso ou redirecionando para a página inicial, por exemplo
+                                Toast.makeText(this@Detailed_list_users, "Utilizador eliminado com sucesso!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@Detailed_list_users, MainPage::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(this@Detailed_list_users, "Erro ao eliminar o utilizador", Toast.LENGTH_SHORT).show()
+                            }
+                        }
 
-                    override fun onFailure(errorMessage: String) {
-                        Toast.makeText(this@Detailed_list_users, errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onFailure(errorMessage: String) {
+                            // Lidar com o erro, como exibir uma mensagem de erro
+                            Toast.makeText(this@Detailed_list_users, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
 
                 dialog.dismiss()
             }
@@ -264,6 +275,49 @@ class Detailed_list_users : AppCompatActivity() {
             }
             alertDialogBuilder.show()
         }
+    }
+
+    fun deleteUser(userId: Int, callback: GetUpdateCallback) {
+        val url = "https://softinsa-web-app-carreiras01.onrender.com/user/delete"
+
+        val body = JSONObject()
+        try {
+            body.put("userId", userId)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val request = object : StringRequest(
+            Method.DELETE, url,
+            Response.Listener { response ->
+                try {
+                    val responseObject = JSONObject(response)
+                    if (responseObject.has("data")) {
+                        val sucesso = true
+                        callback.onSuccess(sucesso)
+                    } else {
+                        val errorMessage = "Resposta JSON Inválida"
+                        callback.onFailure(errorMessage)
+                    }
+                } catch (e: JSONException) {
+                    val errorMessage = "Erro ao analisar a resposta do servidor: ${e.message}"
+                    callback.onFailure(errorMessage)
+                }
+            },
+            Response.ErrorListener { error ->
+                val errorMessage = "Erro ao eliminar o utilizador: ${error.message}"
+                callback.onFailure(errorMessage)
+            }) {
+            override fun getBodyContentType(): String {
+                return "application/json; charset=utf-8"
+            }
+
+            override fun getBody(): ByteArray {
+                return body.toString().toByteArray()
+            }
+        }
+
+        requestQueue.add(request)
     }
 
     fun getFilial(callback: GetFilialCallback, id: Int) {
@@ -335,38 +389,6 @@ class Detailed_list_users : AppCompatActivity() {
         requestQueue.add(request)
     }
 
-    fun deleteUser(userId: Int, callback: GetUpdateCallback) {
-        url = "https://softinsa-web-app-carreiras01.onrender.com/user/delete"
-
-        val body = JSONObject()
-        try {
-            body.put("userId", userId)
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
-        val request = JsonObjectRequest(
-            Request.Method.POST, url, body,
-            Response.Listener { response ->
-                // Check if the response JSON contains the field "data"
-                if (response.has("data")) {
-                    val sucesso = true
-                    callback.onSuccess(sucesso)
-                } else {
-                    val errorMessage = "Resposta JSON Inválida"
-                    callback.onFailure(errorMessage)
-                }
-            },
-            Response.ErrorListener { error ->
-                error.printStackTrace()
-                // Handle request error and call the onFailure callback with the error message
-                val errorMessage = "Erro a atualizar utilizador!"
-                callback.onFailure(errorMessage)
-            })
-
-        requestQueue.add(request)
-    }
 
     fun listCargo(callback: GetCargosCallback) {
         val url = "https://softinsa-web-app-carreiras01.onrender.com/cargo/list"

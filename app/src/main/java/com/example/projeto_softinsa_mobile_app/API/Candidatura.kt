@@ -86,66 +86,6 @@ class Candidatura(private val context:Context, private val editor: SharedPrefere
         requestQueue.add(request)
     }
 
-    fun listCandidaturasUser(userId: Int, callback: GetCandidaturaCallback) {
-        val url = "https://softinsa-web-app-carreiras01.onrender.com/candidatura/list"
-
-        val request = JsonObjectRequest(Request.Method.GET, url, null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
-                    val ar_img_list_Candidatura = ArrayList<imagem_candidatura>()
-
-                    for (i in 0 until jsonArray.length()) {
-                        val item = jsonArray.getJSONObject(i)
-                        val itemUserId = item.getInt("userId") // Get the userId from the JSON
-
-                        if (itemUserId == userId) { // Check if the userId matches the desired userId
-                            val candidaturaId = item.getInt("candidaturaId")
-                            val dataCriacao = item.getString("dataCriacao")
-                            val dataAtualizacao = item.getString("dataAtualizacao")
-                            val isAtiva = item.getBoolean("isAtiva")
-                            val vagaId = item.getInt("vagaId")
-                            val cvDataObject = item.optJSONObject("cv")
-                            val cvDataArray = cvDataObject?.optJSONArray("data")
-                            val cv = cvDataArray?.let { jsonArray ->
-                                val cvBytes = ByteArray(jsonArray.length())
-                                for (i in 0 until jsonArray.length()) {
-                                    cvBytes[i] = jsonArray.getInt(i).toByte()
-                                }
-                                imagem_candidatura.CV(
-                                    type = cvDataObject?.optString("type"),
-                                    data = cvBytes.map { it.toInt() }
-                                )
-                            }
-
-                            val imgItem = imagem_candidatura()
-                            imgItem.atr_candidaturaId_candidatura(candidaturaId)
-                            imgItem.atr_dataCriacao_candidatura(dataCriacao)
-                            imgItem.atr_dataAtualizacao_candidatura(dataAtualizacao)
-                            imgItem.atr_isAtiva_candidatura(isAtiva)
-                            imgItem.atr_userId_candidatura(userId) // Use the passed userId
-                            imgItem.atr_vagaId_candidatura(vagaId)
-                            imgItem.atr_cv_candidatura(cv)
-
-                            ar_img_list_Candidatura.add(imgItem)
-                        }
-                    }
-
-                    callback.onSuccess(ar_img_list_Candidatura)
-                } catch (e: JSONException) {
-                    val errorMessage = "Erro ao analisar a resposta do servidor: ${e.message}"
-                    callback.onFailure(errorMessage)
-                }
-            },
-            { error ->
-                val errorMessage = "Erro ao obter dados do servidor: ${error.message}"
-                callback.onFailure(errorMessage)
-            })
-
-        requestQueue.add(request)
-    }
-
-
     fun createCandidatura(userId: Int, vagaId: Int, cvData: ByteArray, callback: GetCandidaturaSingleCallback) {
         url = "https://softinsa-web-app-carreiras01.onrender.com/candidatura/create"
 

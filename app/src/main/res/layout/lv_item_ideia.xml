@@ -60,7 +60,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/Titulo"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="0dp" />
+                tools:layout_editor_absoluteY="0dp"
+                android:layout_below="@id/Titulo_ideia"
+                />
 
             <TextView
                 android:id="@+id/User_ideia"
@@ -77,7 +79,9 @@
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="0dp" />
+                tools:layout_editor_absoluteY="0dp"
+                android:layout_below="@id/Tipo_ideia"
+                />
 
         </androidx.cardview.widget.CardView>
 

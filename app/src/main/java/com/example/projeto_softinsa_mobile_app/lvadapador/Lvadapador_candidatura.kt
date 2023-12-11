@@ -15,13 +15,9 @@ import java.util.*
 
 class Lvadapador_candidatura(private val context: Context, private val CandidaturaList: List<imagem_candidatura>) : BaseAdapter()  {
 
-    override fun  getViewTypeCount(): Int {
-        if(count > 0){
-            return count;
-        }else {
-            return super.getViewTypeCount();
-
-        } }
+    override fun getViewTypeCount(): Int {
+        return count
+    }
 
     override fun getItemViewType(position: Int): Int {
 

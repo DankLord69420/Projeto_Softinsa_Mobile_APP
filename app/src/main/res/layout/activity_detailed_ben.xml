@@ -17,11 +17,12 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
+            android:scaleType="centerInside"
             android:contentDescription="@string/menu"
             android:src="@drawable/baseline_menu_24"
+            android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="186dp"
@@ -84,7 +85,8 @@
                     app:layout_constraintHorizontal_bias="0.046"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detailed_Iv_Image"
-                    app:layout_constraintVertical_bias="0.244" />
+                    app:layout_constraintVertical_bias="0.244"
+                    android:layout_below="@id/detailed_Tv_Titulo"/>
 
                 <TextView
                     android:id="@+id/detailed_Tv_Descricao"
@@ -102,7 +104,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/detailed_Iv_Image"
                     app:layout_constraintTop_toTopOf="parent"
 
-                    app:layout_constraintVertical_bias="0.37" />
+                    app:layout_constraintVertical_bias="0.37"
+                    android:layout_below="@id/detailed_Tv_Tipo"/>
             </TableLayout>
 
         </androidx.cardview.widget.CardView>

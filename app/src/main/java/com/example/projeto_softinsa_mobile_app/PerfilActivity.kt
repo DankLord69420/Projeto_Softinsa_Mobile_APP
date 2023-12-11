@@ -70,6 +70,7 @@ class PerfilActivity : AppCompatActivity() {
 
         perfil.getUser(userId, object : Perfil.GetUserCallback {
             override fun onSuccess(user: Perfil.User) {
+
                 Email.text = TextUtils.isEmpty(user.email).let { if (it) null else Editable.Factory.getInstance().newEditable(user.email) }
                 Telefone.text = TextUtils.isEmpty(user.telemovel).let { if (it) null else Editable.Factory.getInstance().newEditable(user.telemovel) }
                 if (TextUtils.isEmpty(user.morada) || user.morada == "null") {

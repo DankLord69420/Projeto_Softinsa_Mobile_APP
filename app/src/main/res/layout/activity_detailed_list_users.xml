@@ -19,6 +19,8 @@
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/menu"
+            android:background="@android:color/transparent"
+
             android:src="@drawable/baseline_menu_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -101,6 +103,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Nome"
+                android:layout_below="@id/detailed_Lista_user_Id"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +132,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Sobrenome"
+                android:layout_below="@id/detailed_Lista_user_Nome"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -157,6 +161,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Numero"
+                android:layout_below="@id/detailed_Lista_user_Sobrenome"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -186,6 +191,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Email"
+                android:layout_below="@id/detailed_Lista_user_Num_Func"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -214,6 +220,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Telemovel"
+                android:layout_below="@id/detailed_Lista_user_Email"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -242,6 +249,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Estado"
+                android:layout_below="@id/detailed_Lista_user_Telemovel"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -270,6 +278,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Cargo"
+                android:layout_below="@id/detailed_Lista_user_Estado"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -299,6 +308,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Morada"
+                android:layout_below="@id/detailed_Lista_user_Cargo"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -327,6 +337,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Departamento"
+                android:layout_below="@id/detailed_Lista_user_Morada"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -355,6 +366,7 @@
                 android:foreground="@drawable/border_black"
                 android:padding="2dp"
                 android:text="Filial"
+                android:layout_below="@id/detailed_Lista_user_Departamento"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -368,7 +380,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="90dp"
                 android:layout_marginTop="640dp"
-                android:text="Editar" />
+                android:text="Editar"
+                android:layout_below="@id/detailed_Lista_user_Filial"/>
 
             <Button
                 android:id="@+id/Eliminar"
@@ -376,7 +389,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="190dp"
                 android:layout_marginTop="640dp"
-                android:text="Eliminar" />
+                android:text="Eliminar"
+                android:layout_below="@id/detailed_Lista_user_Filial"/>
 
         </androidx.cardview.widget.CardView>
 

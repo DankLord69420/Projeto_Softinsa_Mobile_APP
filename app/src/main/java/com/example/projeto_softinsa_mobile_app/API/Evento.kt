@@ -22,8 +22,8 @@ class Evento(private val context: Context, private val editor: SharedPreferences
         val titulo: String,
         val descricao: String,
         val tipo: String,
-        val dataInicio: String,
-        val dataFim: String,
+        val dataInicio: String?,
+        val dataFim: String?,
         val estadoId: Int?,
         val userId: Int,
         val notas: String
@@ -122,11 +122,12 @@ class Evento(private val context: Context, private val editor: SharedPreferences
         requestQueue.add(request)
     }
 
-    fun createEvento(titulo: String, descricao: String, tipo: String, dataInicio: String, dataFim: String, estadoId: Int,  userId: Int, notas: String, callback: GetEventoSingleCallback) {
+    fun createEvento(eventoId: Int, titulo: String, descricao: String, tipo: String, dataInicio: String, dataFim: String, estadoId: Int,  userId: Int, notas: String, callback: CreateEventoCallback) {
         url = "https://softinsa-web-app-carreiras01.onrender.com/evento/create"
 
         val body = JSONObject()
         try {
+            body.put("eventoId", eventoId)
             body.put("titulo", titulo)
             body.put("descricao", descricao)
             body.put("tipo", tipo)
@@ -146,23 +147,7 @@ class Evento(private val context: Context, private val editor: SharedPreferences
                     val responseData = response.toString()
                     Log.d("tag", responseData)
                     val sucesso = true
-
-                    val dataObject = response.getJSONObject("data")
-
-                    // Extrair os campos desejados do objeto "data"
-                    val evento = Evento(
-                        eventoId = dataObject.optInt("eventoId"),
-                        titulo = dataObject.optString("titulo"),
-                        descricao = dataObject.optString("descricao"),
-                        tipo = dataObject.optString("tipo"),
-                        dataInicio = dataObject.optString("dataInicio"),
-                        dataFim = dataObject.optString("dataFim"),
-                        estadoId = dataObject.optInt("estadoId"),
-                        userId = dataObject.optInt("userId"),
-                        notas = dataObject.optString("notas")
-                    )
-
-                    callback.onSuccess(evento)
+                    callback.onSuccess(responseData)
                 } else {
                     val errorMessage = "Resposta JSON Inválida"
                     callback.onFailure(errorMessage)

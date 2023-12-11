@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="25dp"
                 android:gravity="center"
-                android:text="Reset password"
+                android:text="Mudar Passe"
                 android:textColor="@color/black"
                 android:textSize="35sp"
                 android:textStyle="bold" />
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/baseline_email_24"
                 android:drawablePadding="15dp"
-                android:hint="email"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 android:textColor="@color/black"
@@ -60,7 +60,7 @@
                 android:layout_margin="20dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@android:color/holo_purple"
-                android:text="Reset Password"
+                android:text="Confirmar"
                 android:textColor="@color/white" />
 
         </LinearLayout>
@@ -82,7 +82,7 @@
             android:id="@+id/Account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account?"
+            android:text="Já tens conta?"
             android:textColor="@color/black" />
 
         <Button
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="Sign in"
+            android:text="Login"
             android:textColor="@android:color/holo_blue_dark" />
     </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:id="@+id/noAccountccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No account yet?"
+            android:text="Não tens conta?"
             android:textColor="@color/black" />
 
         <Button
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="Sign up"
+            android:text="Registe-se aqui!"
             android:textColor="@android:color/holo_blue_dark" />
 
     </LinearLayout>

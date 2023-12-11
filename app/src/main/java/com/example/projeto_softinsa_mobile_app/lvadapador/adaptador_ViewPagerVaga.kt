@@ -11,13 +11,17 @@ class Adaptador_ViewPagerVaga (fragmentManager: FragmentManager, private val isC
     }
 
     override fun getCount(): Int {
-        return 3
+
+        return if (!isColaborador) {
+            1
+        } else {
+            2
+        }
     }
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
             0 -> "Abertas"
             1 -> "Internas"
-            2 -> "Já candidatadas"
             else -> null
         }
     }
